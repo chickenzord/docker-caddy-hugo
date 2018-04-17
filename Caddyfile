@@ -1,0 +1,23 @@
+{$SITE_ADDRESS} {
+    root /var/www/html
+    gzip
+
+    header /js /css /images Cache-Control "max-age=2592000"
+    header / {
+        X-Frame-Options DENY
+        Referrer-Policy "same-origin"
+        X-XSS-Protection "1;mode=block"
+    }
+
+    log stdout
+    errors stdout
+
+    git {
+        repo {$GIT_REPO}
+        branch {$GIT_BRANCH}
+        path /var/www/app
+        hook /webhook {$WEBHOOK_SECRET}
+        then git submodule update --init --recursive
+        then hugo -v --destination=/var/www/html
+    }
+}
