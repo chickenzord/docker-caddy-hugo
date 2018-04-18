@@ -18,6 +18,6 @@
         path /var/www/app
         hook /webhook {$WEBHOOK_SECRET}
         then git submodule update --init --recursive
-        then hugo -v --destination=/var/www/html
+        then hugo -v {$HUGO_OPTS} --destination=/var/www/html
     }
 }
